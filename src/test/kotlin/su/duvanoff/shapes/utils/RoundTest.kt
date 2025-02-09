@@ -3,7 +3,8 @@ package su.duvanoff.shapes.utils
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 
-class UtilsKtTest {
+class RoundTest {
+
     @Test
     fun testRound() {
         val pi = 3.14159265359

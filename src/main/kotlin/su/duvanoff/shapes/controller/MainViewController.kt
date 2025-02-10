@@ -76,7 +76,7 @@ class MainViewController {
                 radioButton.userData = klass
             }
 
-            selectedToggleProperty().addListener { observable, oldValue, newValue ->
+            selectedToggleProperty().addListener { _, _, newValue ->
                 val selectedButton = newValue!! as ToggleButton
 
                 currentShape = (selectedButton.userData as KClass<AbstractShape>)
@@ -89,6 +89,12 @@ class MainViewController {
 
     fun onCalc() {
         // TODO
+        try {
+            val height = heightField.text.toDouble()
+            val base = baseField.text.toDouble()
+        } catch (e: NumberFormatException) {
+            throw RuntimeException(e)
+        }
     }
 
     private fun TextField.addFloatingPointFilter(): TextField {

@@ -10,6 +10,8 @@ import su.duvanoff.shapes.domain.service.DeformShapeService
 import su.duvanoff.shapes.domain.service.impl.BindServiceImpl
 import su.duvanoff.shapes.domain.service.impl.DeformShapeServiceImpl
 import su.duvanoff.shapes.utils.isFloating
+import kotlin.reflect.KClass
+import kotlin.reflect.full.primaryConstructor
 
 class MainViewController {
     @FXML
@@ -52,7 +54,7 @@ class MainViewController {
     private lateinit var deformShapeService: DeformShapeService
     private lateinit var bindService: BindService
 
-    private var currentShape: AbstractShape? = null
+    private var currentShape: KClass<AbstractShape>? = null
 
     @FXML
     fun initialize() {
@@ -77,8 +79,7 @@ class MainViewController {
             selectedToggleProperty().addListener { observable, oldValue, newValue ->
                 val selectedButton = newValue!! as ToggleButton
 
-                // TODO
-                currentShape = (selectedButton.userData as Class<AbstractShape>).getConstructor().newInstance()
+                currentShape = (selectedButton.userData as KClass<AbstractShape>)
             }
         }
 

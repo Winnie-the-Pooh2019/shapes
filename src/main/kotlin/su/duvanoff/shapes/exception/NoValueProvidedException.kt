@@ -2,4 +2,5 @@ package su.duvanoff.shapes.exception
 
 import su.duvanoff.shapes.exception.type.ExceptionPriority
 
-abstract class NoValueProvidedException(message: String? = null, override val priority: ExceptionPriority) : RuntimeException(message), ShapeException
+open class NoValueProvidedException(message: String = "", priority: ExceptionPriority) :
+    ShapeException(message, priority)

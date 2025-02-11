@@ -2,13 +2,22 @@ package su.duvanoff.shapes.controller
 
 import javafx.collections.FXCollections
 import javafx.fxml.FXML
+import javafx.scene.canvas.Canvas
 import javafx.scene.control.*
-import su.duvanoff.shapes.domain.model.AbstractShape
+import su.duvanoff.shapes.domain.drawable.figure.Circle
+import su.duvanoff.shapes.domain.drawable.figure.Triangle
+import su.duvanoff.shapes.domain.drawable.primitive.Edge2d
+import su.duvanoff.shapes.domain.drawable.primitive.Vertex2d
+import su.duvanoff.shapes.domain.model.ModelShape
 import su.duvanoff.shapes.domain.model.type.TypeOfMetal
 import su.duvanoff.shapes.domain.service.BindService
 import su.duvanoff.shapes.domain.service.DeformShapeService
+import su.duvanoff.shapes.domain.service.DrawShapeService
 import su.duvanoff.shapes.domain.service.impl.BindServiceImpl
 import su.duvanoff.shapes.domain.service.impl.DeformShapeServiceImpl
+import su.duvanoff.shapes.domain.service.impl.DrawShapeServiceImpl
+import su.duvanoff.shapes.domain.drawable.type.Color
+import su.duvanoff.shapes.exception.impl.CastingException
 import su.duvanoff.shapes.utils.isFloating
 import kotlin.reflect.KClass
 import kotlin.reflect.full.primaryConstructor
@@ -51,14 +60,19 @@ class MainViewController {
     @FXML
     private lateinit var calcButton: Button
 
+    @FXML
+    private lateinit var canvas: Canvas
+
     private lateinit var deformShapeService: DeformShapeService
+    private lateinit var drawShapeService: DrawShapeService
     private lateinit var bindService: BindService
 
-    private var currentShape: KClass<AbstractShape>? = null
+    private var currentShape: KClass<ModelShape>? = null
 
     @FXML
     fun initialize() {
         deformShapeService = DeformShapeServiceImpl()
+        drawShapeService = DrawShapeServiceImpl(canvas)
         bindService = BindServiceImpl()
 
         metalChoice.items = FXCollections.observableArrayList(TypeOfMetal.entries)
@@ -79,7 +93,7 @@ class MainViewController {
             selectedToggleProperty().addListener { _, _, newValue ->
                 val selectedButton = newValue!! as ToggleButton
 
-                currentShape = (selectedButton.userData as KClass<AbstractShape>)
+                currentShape = (selectedButton.userData as KClass<ModelShape>)
             }
         }
 
@@ -92,8 +106,37 @@ class MainViewController {
         try {
             val height = heightField.text.toDouble()
             val base = baseField.text.toDouble()
+            val metal = metalChoice.selectionModel.selectedItem
+
+            val shape = currentShape!!.primaryConstructor?.call(metal, height, base) as ModelShape
+            val deformedShape = deformShapeService.calc(shape)
+
+            drawShapeService.draw(deformedShape, color = Color.GREEN)
+            drawShapeService.draw(shape, color = Color.BLUE)
+
+            val tri = Triangle<Double, Edge2d>(
+                Edge2d(
+                    Vertex2d(2.0, 3.0),
+                    Vertex2d(2.0, 3.0),
+                ),
+                Edge2d(
+                    Vertex2d(2.0, 3.0),
+                    Vertex2d(2.0, 3.0),
+                ),
+                Edge2d(
+                    Vertex2d(2.0, 3.0),
+                    Vertex2d(2.0, 3.0)
+                )
+            )
+
+            val sq = tri.square()
+
+            val cir = Circle(
+                Vertex2d(2.0, 3.0),
+                5.0
+            )
         } catch (e: NumberFormatException) {
-            throw RuntimeException(e)
+            throw CastingException()
         }
     }
 

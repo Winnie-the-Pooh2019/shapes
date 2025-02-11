@@ -10,4 +10,6 @@ module su.duvanoff.shapes {
 
     opens su.duvanoff.shapes.controller to javafx.fxml;
     exports su.duvanoff.shapes.controller;
+
+    opens su.duvanoff.shapes.domain.model to kotlin.reflect;
 }

@@ -2,11 +2,11 @@ package su.duvanoff.shapes.domain.model
 
 import su.duvanoff.shapes.domain.model.type.TypeOfMetal
 
-class Cone(
+class ModelPrism(
     metal: TypeOfMetal,
     height: Double,
     base: Double
-) : AbstractShape(
+) : ModelShape(
     metal,
     height,
     base

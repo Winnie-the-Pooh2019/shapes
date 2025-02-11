@@ -8,45 +8,45 @@ import kotlin.math.sqrt
 
 class DeformShapeServiceImpl : DeformShapeService {
 
-    override fun calc(shape: AbstractShape): AbstractShape = when (shape) {
-        is Cylinder -> {
+    override fun calc(shape: ModelShape): ModelShape = when (shape) {
+        is ModelCylinder -> {
             val deformedHeight = (shape.height - shape.height / shape.metal.coefficient).round(3)
             val deformedBase = (2 * sqrt(shape.height * (shape.base / 2).pow(2)) / deformedHeight).round(3)
 
-            Cylinder(
+            ModelCylinder(
                 metal = shape.metal,
                 height = deformedHeight,
                 base = deformedBase
             )
         }
 
-        is Parallelepiped -> {
+        is ModelParallelepiped -> {
             val deformedHeight = (shape.height - shape.height / shape.metal.coefficient).round(3)
             val deformedBase = (sqrt(shape.height * shape.base.pow(2))).round(3)
 
-            Parallelepiped(
+            ModelParallelepiped(
                 metal = shape.metal,
                 height = deformedHeight,
                 base = deformedBase
             )
         }
 
-        is Prism -> {
+        is ModelPrism -> {
             val deformedHeight = (shape.height - shape.height / shape.metal.coefficient).round(3)
             val deformedBase = (shape.base - shape.base / shape.metal.coefficient).round(3)
 
-            Prism(
+            ModelPrism(
                 metal = shape.metal,
                 height = deformedHeight,
                 base = deformedBase
             )
         }
 
-        is Cone -> {
+        is ModelCone -> {
             val deformedHeight = (shape.height - shape.height / shape.metal.coefficient).round(3)
             val deformedBase = (shape.base - shape.base / shape.metal.coefficient).round(3)
 
-            Cone(
+            ModelCone(
                 metal = shape.metal,
                 height = deformedHeight,
                 base = deformedBase

@@ -150,7 +150,7 @@
                         <HBox prefWidth="209.0" VBox.vgrow="ALWAYS" />
                         <ButtonBar prefHeight="40.0" prefWidth="200.0">
                           <buttons>
-                            <Button fx:id="calcButton" mnemonicParsing="false" text="Расчет" />
+                            <Button fx:id="calcButton" mnemonicParsing="false" onAction="#onCalc" text="Расчет" />
                               <Button fx:id="exitButton" mnemonicParsing="false" text="Выход" />
                           </buttons>
                            <padding>
